@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Penyadap (MITM) | SOS Verified Alert System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body class="attacker-theme">
+
+<header class="topbar">
+  <a class="brand" href="/">
+    <span class="sos-badge sos-dark">SOS</span>
+    <div>
+      <h1>Penyadap — Man-in-the-Middle</h1>
+      <p class="subtitle">Pihak ketiga yang menyadap &amp; memanipulasi paket SOS</p>
+    </div>
+  </a>
+  <nav class="tabs">
+    <a class="tab" href="/sender">Pengirim</a>
+    <a class="tab active" href="/attacker">Penyadap</a>
+    <a class="tab" href="/center">Pusat Darurat</a>
+  </nav>
+</header>
+
+<nav class="stepper" id="stepper">
+  <div class="step" data-step="1"><span class="dot">1</span><span class="lbl">Sadap Paket</span></div>
+  <div class="line"></div>
+  <div class="step" data-step="2"><span class="dot">2</span><span class="lbl">Susun &amp; Serang</span></div>
+  <div class="line"></div>
+  <div class="step" data-step="3"><span class="dot">3</span><span class="lbl">→ Pusat Darurat</span></div>
+</nav>
+
+<main>
+
+  <!-- ============ PROFIL PENYADAP ============ -->
+  <section class="panel" id="panel-profile">
+    <div class="panel-head">
+      <h2><span class="num">!</span> Profil Penyerang</h2>
+      <span class="tag">Pihak ketiga · tanpa private key apa pun</span>
+    </div>
+    <p class="desc">
+      Paket SOS berisi <code>ciphertext</code>, <code>signature</code>, dan
+      <code>public key pengirim</code> — semuanya lewat jalan terbuka, jadi penyadap
+      bisa melihat dan menggantinya. Tapi penyadap <strong>tidak punya private key siapa pun</strong>:
+    </p>
+    <div class="attack-cap-grid">
+      <div class="cap bad">
+        <div class="cap-title">Tidak bisa membaca isi</div>
+        Dekripsi butuh <em>private key pusat darurat</em> — tidak dimilikinya.
+        Kerahasiaan data tetap terjaga.
+      </div>
+      <div class="cap good">
+        <div class="cap-title">Bisa mengganti isi</div>
+        Enkripsi butuh <em>public key pusat darurat</em> yang terbuka, jadi penyerang
+        bisa membuat ciphertext payload palsu baru.
+      </div>
+      <div class="cap bad">
+        <div class="cap-title">Tidak bisa menandatangani</div>
+        Signature baru butuh <em>private key pengirim</em>. Yang tersisa hanyalah
+        menempelkan signature lama — dan itu yang membuat verifikasi gagal.
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SADAP PAKET ============ -->
+  <section class="panel" id="panel-snoop">
+    <div class="panel-head">
+      <h2><span class="num">1</span> Paket yang Disadap</h2>
+      <span class="tag">Metadata terbuka di jalan</span>
+    </div>
+    <div class="actions">
+      <button class="btn" id="btn-load">Muat Paket Disadap</button>
+      <span class="hint" id="load-hint"></span>
+    </div>
+    <div id="packets-result" class="result-area hidden"></div>
+  </section>
+
+  <!-- ============ SUSUN + SERANG ============ -->
+  <section class="panel locked" id="panel-attack">
+    <div class="panel-head">
+      <h2><span class="num">2</span> Susun Payload Palsu &amp; Serang</h2>
+      <span class="tag">Enkripsi ulang + signature lama</span>
+    </div>
+
+    <p class="desc">
+      Penyerang bebas mengarang isi pesan baru (tidak perlu tahu isi asli!).
+      Payload palsu dienkripsi dengan <code>public key pusat</code>, lalu
+      <strong>signature lama hasil sadapan ditempel apa adanya</strong>.
+    </p>
+
+    <div class="form-grid">
+      <div class="row"><label>Nama (pengirim palsu)</label><input type="text" id="a-nama" value="Fwxz" /></div>
+      <div class="row"><label>Waktu</label><input type="text" id="a-waktu" placeholder="YYYY-MM-DD HH:mm:ss" /></div>
+      <div class="row"><label>Latitude (dimanipulasi)</label><input type="text" id="a-lat" value="-6.200000" /></div>
+      <div class="row"><label>Longitude (dimanipulasi)</label><input type="text" id="a-lon" value="106.816666" /></div>
+      <div class="row full"><label>Pesan palsu</label>
+        <textarea id="a-pesan" rows="2">Terjadi kebakaran hebat di gedung pusat kota</textarea></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn danger" id="btn-attack" disabled>Serang — Ganti Isi Paket</button>
+      <button class="btn ghost" id="btn-reset" disabled>Reset ke Paket Asli</button>
+    </div>
+
+    <div id="attack-result" class="result-area hidden"></div>
+  </section>
+
+  <!-- ============ HANDOFF ============ -->
+  <section class="panel locked" id="panel-handoff">
+    <div class="panel-head">
+      <h2><span class="num">3</span> Serahkan ke Pusat Darurat</h2>
+      <span class="tag">Lihat reaksinya</span>
+    </div>
+    <div id="handoff-result" class="result-area hidden"></div>
+  </section>
+
+</main>
+
+<footer>
+  <p>SOS Verified Alert System · Penyadap (MITM) · Enkripsi ulang pakai public key + signature lama</p>
+</footer>
+
+<div id="toast" class="toast hidden"></div>
+<script src="{{ url_for('static', filename='common.js') }}"></script>
+<script src="{{ url_for('static', filename='attacker.js') }}"></script>
+</body>
+</html>

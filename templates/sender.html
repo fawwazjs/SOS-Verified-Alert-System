@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pengirim SOS | SOS Verified Alert System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="/">
+    <span class="sos-badge">SOS</span>
+    <div>
+      <h1>Pengirim SOS</h1>
+      <p class="subtitle">Menandatangani &amp; mengenkripsi pesan darurat</p>
+    </div>
+  </a>
+  <nav class="tabs">
+    <a class="tab active" href="/sender">Pengirim</a>
+    <a class="tab" href="/attacker">Penyadap</a>
+    <a class="tab" href="/center">Pusat Darurat</a>
+  </nav>
+</header>
+
+<nav class="stepper" id="stepper">
+  <div class="step" data-step="1"><span class="dot">1</span><span class="lbl">Key Generation</span></div>
+  <div class="line"></div>
+  <div class="step" data-step="2"><span class="dot">2</span><span class="lbl">Sender SOS</span></div>
+  <div class="line"></div>
+  <div class="step" data-step="3"><span class="dot">3</span><span class="lbl">Enkripsi &amp; Kirim</span></div>
+  <div class="line"></div>
+  <div class="step" data-step="4"><span class="dot">4</span><span class="lbl">→ Pusat Darurat</span></div>
+</nav>
+
+<main>
+
+  <!-- ============ PANEL 1: KEY GENERATION ============ -->
+  <section class="panel" id="panel-1">
+    <div class="panel-head">
+      <h2><span class="num">1</span> Key Generation</h2>
+      <span class="tag">Pasangan Kunci Pengirim</span>
+    </div>
+
+    <p class="desc">
+      Isi dua bilangan prima <code>p</code>, <code>q</code> dan eksponen publik <code>e</code>.
+      Seluruh tahap RSA tampil di bawah. <strong>Private key disimpan hanya di browser
+      (localStorage)</strong> — tidak pernah dikirim ke database.
+    </p>
+
+    <div class="key-grid one">
+      <div class="key-card sender">
+        <h3>Kunci Pengirim</h3>
+        <div class="row"><label>p (prima)</label><input type="number" id="s-p" value="1009" /></div>
+        <div class="row"><label>q (prima)</label><input type="number" id="s-q" value="1013" /></div>
+        <div class="row"><label>e</label><input type="number" id="s-e" value="17" /></div>
+        <div class="actions">
+          <button class="btn ghost small" id="btn-fill">Isi Contoh</button>
+          <button class="btn primary" id="btn-genkey">Generate Keys</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="key-result" class="result-area hidden"></div>
+  </section>
+
+  <!-- ============ PANEL 2: SENDER SOS ============ -->
+  <section class="panel locked" id="panel-2">
+    <div class="panel-head">
+      <h2><span class="num">2</span> Sender SOS</h2>
+      <span class="tag">Hash + Digital Signature</span>
+    </div>
+
+    <p class="desc">
+      Payload digabung: <code>Nama|Latitude|Longitude|Waktu|Pesan</code> ·
+      hash = (jumlah ASCII) mod 10000 · signature = hash<sup>d</sup> mod n
+    </p>
+
+    <div class="form-grid">
+      <div class="row"><label>Nama Pengirim</label><input type="text" id="f-nama" value="Fwxz" /></div>
+      <div class="row"><label>Pusat Darurat (tujuan)</label>
+        <select id="f-center"><option value="">— muat daftar pusat —</option></select>
+      </div>
+      <div class="row"><label>Latitude</label><input type="text" id="f-lat" value="35.473696" /></div>
+      <div class="row"><label>Longitude</label><input type="text" id="f-lon" value="138.576404" /></div>
+      <div class="row full"><label>Timestamp (bisa diedit)</label>
+        <input type="text" id="f-waktu" placeholder="YYYY-MM-DD HH:mm:ss" /></div>
+      <div class="row full"><label>Pesan Darurat</label>
+        <textarea id="f-pesan" rows="2">Terjadi kecelakaan lalu lintas</textarea></div>
+      <div class="row full">
+        <button class="btn ghost small" id="btn-geo">Ambil Lokasi Saya</button>
+        <span class="hint" id="geo-hint">Butuh izin lokasi (localhost/HTTPS). Input manual tersedia sebagai fallback.</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="btn-sign" disabled>Generate Signature</button>
+      <button class="btn primary" id="btn-send" disabled>Encrypt &amp; Send</button>
+    </div>
+
+    <div id="sign-result" class="result-area hidden"></div>
+  </section>
+
+  <!-- ============ PANEL 3: ENCRYPTION ============ -->
+  <section class="panel locked" id="panel-3">
+    <div class="panel-head">
+      <h2><span class="num">3</span> Encryption Process</h2>
+      <span class="tag">Public Key Pusat Darurat</span>
+    </div>
+    <p class="desc">
+      Tiap karakter diubah jadi 3 digit ASCII, digabung menjadi blok
+      (nilai blok selalu &lt; n pusat), lalu <code>cipher = blok<sup>e</sup> mod n</code>.
+      Paket berisi <em>ciphertext + signature + public key pengirim</em>.
+    </p>
+    <div id="encrypt-result" class="result-area hidden"></div>
+  </section>
+
+</main>
+
+<footer>
+  <p>SOS Verified Alert System · Pengirim · Private key hanya di localStorage</p>
+</footer>
+
+<div id="toast" class="toast hidden"></div>
+<script src="{{ url_for('static', filename='common.js') }}"></script>
+<script src="{{ url_for('static', filename='sender.js') }}"></script>
+</body>
+</html>

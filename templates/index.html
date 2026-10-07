@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOS Verified Alert System | Protokol Kriptografi RSA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="/">
+    <span class="sos-badge">SOS</span>
+    <div>
+      <h1>SOS Verified Alert System</h1>
+      <p class="subtitle">Protokol Pesan Darurat &amp; Digital Signature RSA Murni</p>
+    </div>
+  </a>
+  <nav class="tabs">
+    <a class="tab" href="/sender">Pengirim</a>
+    <a class="tab" href="/attacker">Penyadap</a>
+    <a class="tab" href="/center">Pusat Darurat</a>
+  </nav>
+</header>
+
+<main class="landing">
+
+  <!-- ============ HERO SECTION (FULL-BLEED WITH ASCII MAP TEXTURE) ============ -->
+  <section class="hero-fullbleed">
+    <div class="hero-ascii-bg" aria-hidden="true">
+      <pre class="ascii-world-grid">
+                         .....#....#.#######...
+                    ########..###.#.##....####......
+                 #..############......#.....##.........
+              ......############....######..............##
+           ........################.########................#
+         .........#######################...................##.
+        .........######################.......................#.
+      ..........######################..........................##
+     ............####################............................##
+    .............#################...............................###
+   #...............#######.......##..............................####
+  ...................####........................................#####
+  ...................####....##.....##............................####
+ .......................######....................................#####
+ .............................###...................................###
+ ...............................#....#########.........................
+ ...................................###############....................
+ ...................................################...................
+ .................................######################...............
+  ................................##########################..........
+  .................................########################...........
+   .................................######################...........
+    ..................................###################...........
+     ....................................###############...........
+      ..................................#############.............
+        ................................###########.............
+         ..............................##########..............
+           ............................#######...............
+              ........................####................
+                 .....................###..............
+                    ..................##............
+                         ......................
+      </pre>
+    </div>
+
+    <div class="hero-container container-1200">
+      <div class="hero-header-meta">
+        <span class="meta-tag">• PROTOKOL DATA DARURAT BERDAULAT</span>
+        <span class="meta-tag">• ZERO EXTERNAL CRYPTO LIBRARIES</span>
+      </div>
+
+      <h1 class="hero-title">
+        Pesan Darurat Terverifikasi.<br>
+        Kriptografi RSA dari Nol.
+      </h1>
+
+      <p class="hero-subtext">
+        Infrastruktur pengiriman laporan darurat anti-hoax dengan verifikasi integritas lokasi dan
+        tanda tangan digital RSA manual. Mengamankan transmisi dari manipulasi perantara (man-in-the-middle)
+        tanpa satupun library kriptografi siap pakai.
+      </p>
+
+      <div class="hero-cta-group">
+        <a class="btn primary" href="/sender">Buka Pengirim</a>
+        <a class="btn ghost" href="/center">Pusat Darurat</a>
+        <a class="btn ghost" href="/attacker">Simulasi Penyadap</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ JARAK LEGA MENUJU TOPOLOGI & KOORDINAT GPS ============ -->
+  <section class="section-container topology-section">
+    <div class="container-1200">
+      <!-- ASCII Data Topology & Location Indicator -->
+      <div class="hero-map-card">
+        <div class="map-header">
+          <span class="map-title">• TOPOLOGI DATA DARURAT &amp; KOORDINAT GPS</span>
+          <div class="lime-beacon-wrap">
+            <span class="lime-beacon-dot"></span>
+            <span class="lime-beacon-label">NODE AKTIF: [35.473696, 138.576404]</span>
+          </div>
+        </div>
+        <pre class="ascii-canvas">
++----------------------------------------------------------------------------------------------------+
+|  .  .   :  .    *       .   +  .        .    :   *   .    .   .        .  *   .   :     .   *  .  .  |
+|      +------+           .       .   *   [PUSAT DARURAT REGIONAL]              .         +------+   |
+|   .--|SENDER|--------+                   ID: #1 | KOORDINAT DARURAT        +------------|CLIENT|-. |
+|   |  +------+        |                   PUB: (e=13, n=1000962923)         |            +------+ | |
+|   |  PRIVATE: (d=180017, n=1022117)      PRIV: localStorage only           |  PAYLOAD GPS VALID  | |
+|   |                                                                        |  [35.4736, 138.576] | |
+|   +=======> [DIGITAL SIGNATURE] =======> [ENKRIPSI 26 BLOK] ==============>+                     | |
+|             hash = (ASCII sum) % 10000    cipher = blok^e mod n                                  | |
+|             sig  = hash^d mod n           ASCII 3-digit encoding                                 | |
+|                  .            .                .               .                   .             | |
+|   .   *     :         [MITM ATTACK VECTOR / PENYADAP TERDETEKSI]         :        *        .     | |
+|   .       *       .   Signature lama tidak cocok bila isi/lokasi diubah  .   *        .         . |
++----------------------------------------------------------------------------------------------------+
+        </pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DARK FEATURES SECTION (CENTERED HEADER + 4-COLUMN CARDS) ============ -->
+  <section class="section-container features-section">
+    <div class="container-1200">
+      <div class="section-title-block centered">
+        <h2 class="section-heading">Tiga Peran Sistem &amp; Mesin Protokol</h2>
+        <p class="section-subheading">
+          Alur end-to-end terpisah antara pengirim pesan darurat, pihak penyadap lalu lintas jaringan,
+          dan posko penanganan darurat sebagai pihak penerima resmi.
+        </p>
+      </div>
+
+      <div class="role-grid four-col">
+        <!-- Card 1: Sender -->
+        <a class="role-card sender" href="/sender">
+          <div class="card-head">
+            <span class="role-num">01</span>
+            <span class="role-tag">PENGIRIM</span>
+          </div>
+          <h3>Halaman Pengirim</h3>
+          <ul>
+            <li>Pembangkitan pasangan kunci RSA pengirim</li>
+            <li>Input nama, waktu, pesan &amp; GPS latitude/longitude</li>
+            <li>Hashing manual &amp; Digital Signature (private key)</li>
+            <li>Enkripsi payload dengan public key pusat</li>
+          </ul>
+          <span class="role-cta">Buka Pengirim &rarr;</span>
+        </a>
+
+        <!-- Card 2: Attacker -->
+        <a class="role-card attacker" href="/attacker">
+          <div class="card-head">
+            <span class="role-num">02</span>
+            <span class="role-tag">PENYADAP</span>
+          </div>
+          <h3>Halaman Penyadap (MITM)</h3>
+          <ul>
+            <li>Sadap paket di jalan (signature &amp; metadata terbuka)</li>
+            <li>Kerahasiaan terjaga: isi pesan tak bisa dibaca</li>
+            <li>Manipulasi isi pesan atau koordinat palsu</li>
+            <li>Enkripsi ulang + tempel signature lama</li>
+          </ul>
+          <span class="role-cta">Buka Penyadap &rarr;</span>
+        </a>
+
+        <!-- Card 3: Emergency Center -->
+        <a class="role-card center" href="/center">
+          <div class="card-head">
+            <span class="role-num">03</span>
+            <span class="role-tag">PUSAT</span>
+          </div>
+          <h3>Halaman Pusat Darurat</h3>
+          <ul>
+            <li>Pembangkitan &amp; registrasi public key pusat ke DB</li>
+            <li>Inbox pesan masuk tersinkronisasi database</li>
+            <li>Dekripsi blok dengan private key pusat darurat</li>
+            <li>Verifikasi keaslian signature pengirim &amp; anti-hoax</li>
+          </ul>
+          <span class="role-cta">Buka Pusat Darurat &rarr;</span>
+        </a>
+
+        <!-- Card 4: Protocol Engine -->
+        <div class="role-card protocol">
+          <div class="card-head">
+            <span class="role-num">04</span>
+            <span class="role-tag">RSA MURNI</span>
+          </div>
+          <h3>Matematika Mandiri</h3>
+          <ul>
+            <li>Extended Euclidean Algorithm (Bezout Identity)</li>
+            <li>Modular Inverse manual tanpa helper bawaan</li>
+            <li>Square-and-Multiply manual untuk modPow</li>
+            <li>Encoding blok berbasis 3-digit ASCII dinamis</li>
+          </ul>
+          <span class="role-cta code-accent">• ENGINE rsa.py</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SPLIT CONTENT SECTION ============ -->
+  <section class="section-container split-container">
+    <div class="container-1200">
+      <div class="split-section">
+        <div class="split-col text-col">
+          <span class="meta-tag">• ARSITEKTUR KEAMANAN 3 LAPIS</span>
+          <h2 class="split-heading">
+            Integritas Data Matematis Tanpa Ketergantungan Eksternal
+          </h2>
+          <p class="split-desc">
+            Sistem ini dibangun untuk menyelesaikan masalah nyata dalam layanan darurat publik:
+            banyaknya laporan palsu (hoax), kemungkinan pemalsuan koordinat ambulans/evakuasi di tengah jalan,
+            dan ketiadaan bukti otentikasi identitas pengirim.
+          </p>
+          <div class="protocol-points">
+            <div class="point-item">
+              <strong>1. Kerahasiaan (Confidentiality)</strong>
+              <span>Paket dienkripsi menggunakan public key Pusat Darurat. Penyadap di jaringan tidak bisa membaca teks pesan asli.</span>
+            </div>
+            <div class="point-item">
+              <strong>2. Keaslian &amp; Non-Repudiasi (Authenticity)</strong>
+              <span>Hanya pengirim yang memiliki private key-nya sendiri untuk menghasilkan digital signature yang valid.</span>
+            </div>
+            <div class="point-item">
+              <strong>3. Deteksi Manipulasi (Integrity)</strong>
+              <span>Perubahan 1 karakter ataupun koordinat koma terkecil akan menghasilkan hash berbeda &mdash; pesan ditolak sebagai tidak valid.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="split-col visual-col">
+          <div class="terminal-box">
+            <div class="terminal-head">
+              <span class="term-dot"></span>
+              <span class="term-title">CONSOLE // ALUR VERIFIKASI IDENTIK</span>
+            </div>
+            <div class="terminal-body mono">
+              <div class="term-line"><span class="c-muted">01:</span> PAYLOAD: "Fwxz|35.473696|138.576404|2026-10-07 13:20:15|..."</div>
+              <div class="term-line"><span class="c-muted">02:</span> HASH    : 5764 = sum(ASCII) mod 10000</div>
+              <div class="term-line"><span class="c-muted">03:</span> SIGN    : 5764^180017 mod 1022117 = <span class="c-blue">689431</span></div>
+              <div class="term-line"><span class="c-muted">04:</span> CIPHER  : 26 BLOK TEKS TERENKRIPSI KE DB</div>
+              <div class="term-line"><span class="c-muted">05:</span> DECRYPT : cipher^d_pusat mod n_pusat &rarr; PAYLOAD ASLI</div>
+              <div class="term-line"><span class="c-muted">06:</span> VERIFY  : 689431^17 mod 1022117 = <span class="c-lime">5764</span></div>
+              <div class="term-line"><span class="c-muted">07:</span> REHASH  : sum(ASCII dekripsi) mod 10000 = <span class="c-lime">5764</span></div>
+              <div class="term-line"><span class="c-muted">08:</span> STATUS  : <span class="badge-terminal-ok">SOS VALID &mdash; MATEMATIS IDENTIK</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BAND DIVIDER (FULL-BLEED #0000ff) ============ -->
+  <section class="band-divider">
+    <div class="container-1200">
+      <div class="band-inner">
+        <span class="band-dot">•</span>
+        <span class="band-text">
+          IMPLEMENTASI ALGORITMA RSA DARI NOL TANPA PYCRYPTODOME, HASHLIB, ATAU OPENSSL
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DEMO SEQUENCE STEPPER BLOCK ============ -->
+  <section class="section-container demo-guide-section">
+    <div class="container-1200">
+      <div class="step-block guide-block">
+        <div class="bhead">Panduan Demo Presentasi (Ikuti Urutan Skenario 3 Tab)</div>
+        <div class="bbody guide-body">
+          <div class="guide-grid">
+            <div class="guide-step">
+              <span class="step-badge">TAHAP 1</span>
+              <strong>Pusat Darurat</strong>
+              <p>Buka tab <em>/center</em> &rarr; Klik <code>[Generate &amp; Daftarkan]</code> &rarr; Kunci publik pusat terdaftar di database.</p>
+            </div>
+            <div class="guide-step">
+              <span class="step-badge">TAHAP 2</span>
+              <strong>Pengirim SOS</strong>
+              <p>Buka tab <em>/sender</em> &rarr; Klik <code>[Isi Contoh]</code> &rarr; <code>[Generate Keys]</code> &rarr; <code>[Generate Signature]</code> &rarr; <code>[Encrypt &amp; Send]</code>.</p>
+            </div>
+            <div class="guide-step">
+              <span class="step-badge">TAHAP 3</span>
+              <strong>Pusat Memverifikasi</strong>
+              <p>Kembali ke <em>/center</em> &rarr; Klik <code>[Muat Inbox]</code> &rarr; Pilih baris pesan &rarr; <code>[Verifikasi Signature]</code> &rarr; <strong>✓ SOS VALID</strong>.</p>
+            </div>
+            <div class="guide-step">
+              <span class="step-badge">TAHAP 4</span>
+              <strong>Penyadap (MITM)</strong>
+              <p>Buka tab <em>/attacker</em> &rarr; Klik <code>[Muat Paket Disadap]</code> &rarr; Pilih pesan &rarr; <code>[Serang &mdash; Ganti Isi Paket]</code> (lokasi palsu).</p>
+            </div>
+            <div class="guide-step">
+              <span class="step-badge">TAHAP 5</span>
+              <strong>Deteksi Pemalsuan</strong>
+              <p>Kembali ke <em>/center</em> &rarr; Muat ulang inbox &rarr; Pilih paket ditamper &rarr; <code>[Verifikasi]</code> &rarr; <strong>✗ SOS TIDAK VALID</strong>.</p>
+            </div>
+            <div class="guide-step">
+              <span class="step-badge">TAHAP 6</span>
+              <strong>Pemulihan Paket</strong>
+              <p>Kembali ke <em>/attacker</em> &rarr; Klik <code>[Reset ke Paket Asli]</code> &rarr; Verifikasi lagi di <em>/center</em> &rarr; <strong>✓ SOS VALID kembali</strong>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>SOS Verified Alert System &middot; Kriptografi &middot; Implementasi RSA Murni dari Nol</p>
+</footer>
+
+<div id="toast" class="toast hidden"></div>
+</body>
+</html>

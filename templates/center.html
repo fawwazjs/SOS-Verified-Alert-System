@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pusat Darurat | SOS Verified Alert System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="/">
+    <span class="sos-badge">SOS</span>
+    <div>
+      <h1>Pusat Darurat</h1>
+      <p class="subtitle">Mendekripsi &amp; memverifikasi pesan darurat masuk</p>
+    </div>
+  </a>
+  <nav class="tabs">
+    <a class="tab" href="/sender">Pengirim</a>
+    <a class="tab" href="/attacker">Penyadap</a>
+    <a class="tab active" href="/center">Pusat Darurat</a>
+  </nav>
+</header>
+
+<nav class="stepper" id="stepper">
+  <div class="step" data-step="1"><span class="dot">1</span><span class="lbl">Key Generation</span></div>
+  <div class="line"></div>
+  <div class="step" data-step="2"><span class="dot">2</span><span class="lbl">Inbox (DB)</span></div>
+  <div class="line"></div>
+  <div class="step" data-step="3"><span class="dot">3</span><span class="lbl">Dekripsi</span></div>
+  <div class="line"></div>
+  <div class="step" data-step="4"><span class="dot">4</span><span class="lbl">Verifikasi</span></div>
+</nav>
+
+<main>
+
+  <!-- ============ KEY GENERATION PUSAT ============ -->
+  <section class="panel" id="panel-key">
+    <div class="panel-head">
+      <h2><span class="num">1</span> Key Generation</h2>
+      <span class="tag">Pasangan Kunci Pusat Darurat</span>
+    </div>
+    <p class="desc">
+      Public key pusat didaftarkan ke database (untuk enkripsi oleh pengirim).
+      <strong>Private key pusat tetap hanya di localStorage</strong> — dibutuhkan untuk
+      dekripsi, tidak pernah disimpan di server.
+    </p>
+
+    <div class="key-grid one">
+      <div class="key-card center">
+        <h3>Kunci Pusat Darurat</h3>
+        <div class="row"><label>Nama Pusat</label><input type="text" id="c-nama" value="Pusat Darurat Surabaya" /></div>
+        <div class="row"><label>p (prima)</label><input type="number" id="c-p" value="31627" /></div>
+        <div class="row"><label>q (prima)</label><input type="number" id="c-q" value="31649" /></div>
+        <div class="row"><label>e</label><input type="number" id="c-e" value="13" /></div>
+        <div class="actions">
+          <button class="btn ghost small" id="btn-fill">Isi Contoh</button>
+          <button class="btn primary" id="btn-genkey">Generate &amp; Daftarkan</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="key-result" class="result-area hidden"></div>
+  </section>
+
+  <!-- ============ PANEL 4: INBOX + DEKRIPSI ============ -->
+  <section class="panel locked" id="panel-4">
+    <div class="panel-head">
+      <h2><span class="num">4</span> Emergency Center</h2>
+      <span class="tag">Inbox database · Private Key Pusat</span>
+    </div>
+    <p class="desc">
+      Inbox dimuat dari database (Supabase PostgreSQL).
+      Dekripsi: <code>blok = cipher<sup>d</sup> mod n</code> untuk tiap blok ciphertext.
+    </p>
+
+    <div class="actions">
+      <button class="btn" id="btn-inbox">Muat Inbox</button>
+      <span class="hint" id="inbox-hint"></span>
+    </div>
+
+    <div id="inbox-result" class="result-area hidden"></div>
+
+    <div class="msg-info" style="margin-top:12px">
+      Ingin mendemonstrasikan manipulasi data? Buka tab <a href="/attacker">Penyadap</a>
+      untuk mengubah isi paket, lalu kembali ke sini dan verifikasi ulang.
+    </div>
+
+    <div id="decrypt-result" class="result-area hidden"></div>
+  </section>
+
+  <!-- ============ PANEL 5: VERIFIKASI ============ -->
+  <section class="panel locked" id="panel-5">
+    <div class="panel-head">
+      <h2><span class="num">5</span> Verification Result</h2>
+      <span class="tag">Public Key Pengirim</span>
+    </div>
+    <p class="desc">
+      <code>verifiedHash = signature<sup>e</sup> mod n</code> (public key pengirim, diambil
+      dari database) dibandingkan dengan hash ulang dari hasil dekripsi.
+    </p>
+    <div class="actions">
+      <button class="btn primary" id="btn-verify" disabled>Verifikasi Signature</button>
+      <span class="hint">Status disimpan ke database: pending / valid / invalid</span>
+    </div>
+    <div id="verify-result" class="result-area hidden"></div>
+  </section>
+
+</main>
+
+<footer>
+  <p>SOS Verified Alert System · Pusat Darurat · Inbox dari Supabase PostgreSQL</p>
+</footer>
+
+<div id="toast" class="toast hidden"></div>
+<script src="{{ url_for('static', filename='common.js') }}"></script>
+<script src="{{ url_for('static', filename='center.js') }}"></script>
+</body>
+</html>
