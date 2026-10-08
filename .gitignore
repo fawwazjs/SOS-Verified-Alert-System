@@ -118,6 +118,18 @@ temp/
 *.rej
 
 # ==========================================================
+# Debug / QA / scratch (BUKAN bagian aplikasi)
+# ==========================================================
+patch_*.js
+attacker.js.bak
+*.bak
+qa*.mjs
+QA*.mjs
+
+# Worktree / tooling lokal
+.kilo/
+
+# ==========================================================
 # Docker (jika nanti dipakai)
 # ==========================================================
 .dockerignore

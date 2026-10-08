@@ -2,13 +2,14 @@
 
 **Sistem Layanan Pesan Darurat dengan Verifikasi Lokasi dan Digital Signature Berbasis RSA**
 
-Proyek **ETS Mata Kuliah Kriptografi** — aplikasi web full-stack yang mengimplementasikan
+Proyek **Mata Kuliah Kriptografi** — aplikasi web full-stack yang mengimplementasikan
 **algoritma RSA dari nol (from scratch)** tanpa satu pun library kriptografi siap pakai.
 Seluruh tahapan RSA (pembangkitan kunci, hashing, digital signature, enkripsi, dekripsi,
 verifikasi) ditampilkan **langkah demi langkah** di UI.
 
-**Anggota Kelompok (3 orang):**
-
+**Kriptografi (B)**<br>
+**Anggota Kelompok:**<br>
+**Kelompok 11**
 | Nama | NRP |
 |------|-----|
 | Ahmad Wildan Fawwaz | 5027241001 |
@@ -79,7 +80,8 @@ SOS-Verified-Alert-System/
 ├── .env.example      # Template environment variable (TANPA kredensial)
 ├── Procfile          # Perintah production: gunicorn app:app
 ├── README.md
-├── docs/             # Screenshot (lihat docs/README.md)
+├── docs/             # Dokumentasi tambahan (lihat docs/README.md)
+├── picture/          # Screenshot dokumentasi alur demo (lihat bagian Screenshot)
 ├── templates/
 │   ├── index.html    # Landing (pilih peran)
 │   ├── sender.html   # Halaman Pengirim    → route /sender
@@ -460,34 +462,58 @@ frontend memakai **HTML + CSS + JavaScript murni**.
 
 ## Screenshot
 
-> Isi placeholder di bawah dengan screenshot. Panduan penamaan: [`docs/README.md`](docs/README.md).
+> Dokumentasi tangkapan layar alur demo end-to-end. Berkas gambar tersimpan di folder
+> [`picture/`](picture/).
 
-### Landing Page
-![Landing](docs/01-landing.png)
+### 1. Landing Page
+![Landing Page](picture/SOS_LandingPage.png)
 
-### Halaman Pengirim — Key Generation
-![Keygen Pengirim](docs/02-sender-keygen.png)
+### 2. Halaman Pengirim
 
-### Halaman Pengirim — Hash & Signature
-![Signature](docs/03-sender-sign.png)
+#### 2.1 Generate Keys
+![Generate Keys](picture/SOS_Pengirim_KeyGeneration.png)
 
-### Halaman Pengirim — Enkripsi & Kirim
-![Enkripsi](docs/04-sender-encrypt.png)
+#### 2.2 Keys Berhasil Dibuat
+![Keys Berhasil](picture/SOS_Pengirim_KeyGenerationSuccess.png)
 
-### Halaman Penyadap — Sadap Paket & Serang
-![Penyadap](docs/05-attacker-sadap-serang.png)
+#### 2.3 Formulir Pesan SOS
+![Formulir SOS](picture/SOS_Pengirim_SenderSOS.png)
 
-### Halaman Pusat Darurat — Inbox & Dekripsi
-![Inbox & Dekripsi](docs/06-center-inbox-decrypt.png)
+#### 2.4 Proses Enkripsi
+![Proses Enkripsi](picture/SOS_Pengirim_EncryptProcess.png)
 
-### Hasil: SOS VALID
-![Valid](docs/07-center-valid.png)
+#### 2.5 Enkripsi & Kirim
+![Encrypt & Send](picture/SOS_Pengirim_EncryptnSend.png)
 
-### Hasil: SOS TIDAK VALID (setelah diserang penyadap)
-![Invalid](docs/08-center-invalid-tamper.png)
+![Encrypt & Send — Terkirim](picture/SOS_Pengirim_EncryptnSend2.png)
 
-### Deploy di Render + Supabase
-![Deploy](docs/09-deploy.png)
+### 3. Halaman Penyadap (Man-in-the-Middle)
+
+#### 3.1 Muat Paket yang Disadap
+![Muat Paket Disadap](picture/SOS_Penyadap_PaketPenyadap.png)
+
+#### 3.2 Paket Berhasil Disadap
+![Paket Disadap Sukses](picture/SOS_Penyadap_PaketPenyadapSucess.png)
+
+#### 3.3 Susun Payload Palsu & Serang
+![Payload Palsu](picture/SOS_Penyadap_PayloadPalsu.png)
+
+### 4. Halaman Pusat Darurat
+
+#### 4.1 Generate & Daftarkan Kunci
+![Keygen Pusat Darurat](picture/SOS_PusatDarurat_KeyGeneration.png)
+
+#### 4.2 Verifikasi — SOS VALID
+![SOS Valid](picture/SOS_PusatDarurat_SOSValid.png)
+
+#### 4.3 Terdeteksi Serangan (Terkena Serangan)
+![Terserang](picture/SOS_PusatDarurat_Terserang.png)
+
+#### 4.4 Verifikasi — SOS TIDAK VALID
+![SOS Tidak Valid](picture/SOS_PusatDarurat_SOSTidakValid.png)
+
+#### 4.5 Setelah Reset — SOS Kembali VALID
+![Tidak Terserang](picture/SOS_PusatDarurat_TidakTerserang.png)
 
 ---
 
@@ -501,8 +527,3 @@ frontend memakai **HTML + CSS + JavaScript murni**.
 | Frontend | HTML5 + CSS3 (dark theme) + JavaScript murni (fetch, geolocation, localStorage) |
 | Deploy | Render (Web Service) + Supabase (Session Pooler) |
 
----
-
-## Lisensi
-
-Dibuat untuk keperluan akademik — **ETS Mata Kuliah Kriptografi**.

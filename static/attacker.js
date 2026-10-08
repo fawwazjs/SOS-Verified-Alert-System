@@ -37,7 +37,10 @@ async function loadPackets(silent = false) {
 
   state.packets = data.messages;
   const rows = data.messages.map((m) => {
-    const sel = state.selected && state.selected.id === m.id ? ' class="row-click selected"' : ' class="row-click"';
+    // id dari server berupa STRING (serialisasi B() menjaga presisi) — bandingkan
+    // sebagai string agar tidak gagal karena 4 !== "4".
+    const sel = state.selected && String(state.selected.id) === String(m.id)
+      ? ' class="row-click selected"' : ' class="row-click"';
     const st = m.status === "valid" ? `<span class="chip ok">VALID</span>`
       : m.status === "invalid" ? `<span class="chip bad">INVALID</span>`
       : `<span class="chip">pending</span>`;
@@ -64,14 +67,16 @@ async function loadPackets(silent = false) {
 }
 
 function selectPacket(id) {
-  state.selected = state.packets.find((p) => p.id === id) || null;
+  // id dari dataset HTML selalu string, sedangkan state.packets[].id juga
+  // string (dari server). Samakan tipe sebelum membandingkan.
+  state.selected = state.packets.find((p) => String(p.id) === String(id)) || null;
   if (!state.selected) return;
-  loadPackets(true);   // render ulang tanda terpilih
+  loadPackets(true);
   unlock("panel-attack");
   $("#btn-attack").disabled = false;
   $("#btn-reset").disabled = false;
   setStepper(2);
-  toast(`Paket #${id} dibajak — signature terekam, isi tertutup`, "err");
+  toast(`Paket #${state.selected.id} dipilih — signature terekam, isi tertutup`, "err");
 }
 
 /* ---------------- 2. Serang / Reset ---------------- */
